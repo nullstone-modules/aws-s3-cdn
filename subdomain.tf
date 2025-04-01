@@ -9,6 +9,9 @@ locals {
   alt_subdomains = var.enable_www ? ["www.${local.subdomain}"] : []
   all_subdomains = concat([local.subdomain], local.alt_subdomains)
   delegator      = try(data.ns_connection.subdomain.outputs.delegator, {})
+
+  subdomain_certificate_arn = try(data.ns_connection.subdomain.outputs.certificate_arn, "")
+  subdomain_has_certificate = local.subdomain_certificate_arn != ""
 }
 
 provider "aws" {
