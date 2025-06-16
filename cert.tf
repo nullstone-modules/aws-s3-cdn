@@ -1,6 +1,6 @@
 module "cert" {
   source  = "nullstone-modules/sslcert/aws"
-  enabled = true
+  enabled = !local.subdomain_has_certificate
 
   domain = {
     name    = local.subdomain

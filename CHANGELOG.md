@@ -1,3 +1,6 @@
+# 0.9.4 (Jun 16, 2025)
+* Fixed skip certificate creation when subdomain has a certificate already.
+
 # 0.9.3 (Jun 16, 2025)
 * Use SSL certificate from connected subdomain if it created one.
 * Added terraform lock file.
