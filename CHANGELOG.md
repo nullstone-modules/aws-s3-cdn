@@ -1,3 +1,7 @@
+# 0.9.3 (Jun 16, 2025)
+* Use SSL certificate from connected subdomain if it created one.
+* Added terraform lock file.
+
 # 0.9.2 (Nov 16, 2023)
 * Enable automatic compression for site assets and `env.json`.
 

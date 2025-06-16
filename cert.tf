@@ -15,3 +15,7 @@ module "cert" {
     aws.domain = aws.domain
   }
 }
+
+locals {
+  certificate_arn = local.subdomain_has_certificate ? local.subdomain_certificate_arn : module.cert.certificate_arn
+}

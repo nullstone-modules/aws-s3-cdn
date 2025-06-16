@@ -45,7 +45,7 @@ resource "aws_cloudfront_distribution" "this" {
   default_root_object = var.default_document
 
   viewer_certificate {
-    acm_certificate_arn      = module.cert.certificate_arn
+    acm_certificate_arn      = local.certificate_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
