@@ -1,4 +1,4 @@
-# 0.9.3 (Apr 01, 2025)
+# 0.9.3 (Jun 16, 2025)
 * Use SSL certificate from connected subdomain if it created one.
 * Added terraform lock file.
 
