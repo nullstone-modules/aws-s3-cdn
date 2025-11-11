@@ -11,6 +11,8 @@ EOF
 locals {
   // Older versions of the static site module don't have this, fallback to versioned assets
   artifacts_key_template = try(var.app_metadata["artifacts_key_template"], "{{app-version}}/")
+  log_group_name         = try(var.app_metadata["log_group_name"], "")
+  log_group_arn          = try(var.app_metadata["log_group_arn"], "")
 }
 
 variable "enable_www" {

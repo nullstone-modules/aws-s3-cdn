@@ -1,3 +1,7 @@
+# 0.10.0 (Nov 11, 2025)
+* Added access logs to CloudFront distribution (accessible via Nullstone logs).
+* Added metrics mappings to show CloudFront metrics in Nullstone.
+
 # 0.9.4 (Jun 16, 2025)
 * Fixed skip certificate creation when subdomain has a certificate already.
 
