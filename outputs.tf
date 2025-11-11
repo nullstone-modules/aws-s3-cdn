@@ -22,3 +22,14 @@ locals {
 output "public_urls" {
   value = [for pu in local.public_fqdns : { url = "https://${trimsuffix(pu, ".")}" }]
 }
+
+output "metrics" {
+  value = [
+    for m in local.metrics : {
+      name     = m.name
+      type     = m.type
+      unit     = m.unit
+      mappings = jsonencode(m.mappings)
+    }
+  ]
+}
