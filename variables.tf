@@ -47,32 +47,6 @@ Otherwise, will respond with `HTTP 404` serving `document`.
 EOF
 }
 
-variable "min_ttl" {
-  type        = number
-  default     = 0
-  description = <<EOF
-Minimum amount of time that you want objects to stay in CloudFront caches before CloudFront queries your origin to see whether the object has been updated.
-Defaults to 0 seconds.
-EOF
-}
-
-variable "default_ttl" {
-  type        = number
-  default     = 86400
-  description = <<EOF
-Default amount of time (in seconds) that an object is in a CloudFront cache before CloudFront forwards another request in the absence of an Cache-Control max-age or Expires header.
-EOF
-}
-
-variable "max_ttl" {
-  type        = number
-  default     = 31536000
-  description = <<EOF
-Maximum amount of time (in seconds) that an object is in a CloudFront cache before CloudFront forwards another request to your origin to determine whether the object has been updated.
-Only effective in the presence of Cache-Control max-age, Cache-Control s-maxage, and Expires headers.
-EOF
-}
-
 variable "cache_policy" {
   type        = string
   default     = "Managed-CachingOptimized"

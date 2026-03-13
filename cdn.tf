@@ -76,9 +76,6 @@ resource "aws_cloudfront_distribution" "this" {
     cached_methods             = ["GET", "HEAD", "OPTIONS"]
     target_origin_id           = local.s3_origin_id
     viewer_protocol_policy     = "redirect-to-https"
-    min_ttl                    = var.min_ttl
-    default_ttl                = var.default_ttl
-    max_ttl                    = var.max_ttl
     cache_policy_id            = data.aws_cloudfront_cache_policy.this.id
     response_headers_policy_id = data.aws_cloudfront_response_headers_policy.this.id
     compress                   = true
@@ -90,9 +87,6 @@ resource "aws_cloudfront_distribution" "this" {
     path_pattern               = "env.json"
     target_origin_id           = local.s3_env_origin_id
     viewer_protocol_policy     = "https-only"
-    min_ttl                    = var.min_ttl
-    default_ttl                = var.default_ttl
-    max_ttl                    = var.max_ttl
     cache_policy_id            = data.aws_cloudfront_cache_policy.this.id
     response_headers_policy_id = data.aws_cloudfront_response_headers_policy.this.id
     compress                   = true

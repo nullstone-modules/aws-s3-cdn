@@ -1,3 +1,6 @@
+# 0.11.0 (Mar 13, 2026)
+* Removed `min_ttl`, `default_ttl`, and `max_ttl` since they are not used with a managed cache policy.
+
 # 0.10.0 (Nov 11, 2025)
 * Added access logs to CloudFront distribution (accessible via Nullstone logs).
 * Added metrics mappings to show CloudFront metrics in Nullstone.
