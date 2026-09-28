@@ -1,0 +1,54 @@
+// CloudFront Function (viewer-request) that maps extension-less URIs to `.html` files.
+// Rendered by Terraform: `redirect` is true for `clean_urls.mode = "redirect"`.
+
+function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+
+  // `/` is handled by the distribution's default_root_object.
+  if (uri === '/') {
+    return request;
+  }
+
+  // Directory-style path: always rewrite, `/docs/` is a legitimate canonical URL.
+  if (uri.endsWith('/')) {
+    request.uri = uri + 'index.html';
+    return request;
+  }
+
+  // Anything with an extension in its last segment is a real file; leave it alone.
+  var lastSegment = uri.substring(uri.lastIndexOf('/') + 1);
+  if (lastSegment.indexOf('.') !== -1) {
+    return request;
+  }
+
+  var target = uri + '.html';
+
+  if (!${redirect}) {
+    request.uri = target;
+    return request;
+  }
+
+  return {
+    statusCode: 301,
+    statusDescription: 'Moved Permanently',
+    headers: {
+      location: { value: target + buildQueryString(request.querystring) }
+    }
+  };
+}
+
+function buildQueryString(qs) {
+  var parts = [];
+  for (var key in qs) {
+    var entry = qs[key];
+    if (entry.multiValue) {
+      for (var i = 0; i < entry.multiValue.length; i++) {
+        parts.push(key + '=' + entry.multiValue[i].value);
+      }
+    } else {
+      parts.push(entry.value === '' ? key : key + '=' + entry.value);
+    }
+  }
+  return parts.length ? '?' + parts.join('&') : '';
+}
