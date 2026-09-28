@@ -36,6 +36,20 @@ data "aws_cloudfront_response_headers_policy" "this" {
   name = var.response_headers_policy
 }
 
+// Maps extension-less URIs to their `.html` file on every viewer request.
+// Only created when `clean_urls.enabled` is true; `function_association` below is empty otherwise.
+resource "aws_cloudfront_function" "clean_urls" {
+  count = var.clean_urls.enabled ? 1 : 0
+
+  name    = "${local.resource_name}-clean-urls"
+  runtime = "cloudfront-js-2.0"
+  comment = "Map extension-less URIs to .html (${var.clean_urls.mode})"
+  publish = true
+  code = templatefile("${path.module}/functions/clean_urls.js.tftpl", {
+    redirect = var.clean_urls.mode == "redirect"
+  })
+}
+
 resource "aws_cloudfront_distribution" "this" {
   enabled             = true
   price_class         = "PriceClass_All"
@@ -79,6 +93,15 @@ resource "aws_cloudfront_distribution" "this" {
     cache_policy_id            = data.aws_cloudfront_cache_policy.this.id
     response_headers_policy_id = data.aws_cloudfront_response_headers_policy.this.id
     compress                   = true
+
+    dynamic "function_association" {
+      for_each = aws_cloudfront_function.clean_urls
+
+      content {
+        event_type   = "viewer-request"
+        function_arn = function_association.value.arn
+      }
+    }
   }
 
   ordered_cache_behavior {

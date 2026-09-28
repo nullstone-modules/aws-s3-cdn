@@ -1,3 +1,8 @@
+# 0.12.0 (Sep 28, 2026)
+* Added `clean_urls` to serve extension-less URLs via a CloudFront Function.
+  `mode = "redirect"` (default) answers `/page` with a `301` to `/page.html`; `mode = "rewrite"` serves the file silently.
+  Off by default; existing distributions are unchanged.
+
 # 0.11.0 (Mar 13, 2026)
 * Removed `min_ttl`, `default_ttl`, and `max_ttl` since they are not used with a managed cache policy.
 

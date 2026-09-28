@@ -47,6 +47,32 @@ Otherwise, will respond with `HTTP 404` serving `document`.
 EOF
 }
 
+variable "clean_urls" {
+  type = object({
+    enabled : bool
+    mode : string
+  })
+
+  default = {
+    enabled = false
+    mode    = "redirect"
+  }
+
+  validation {
+    condition     = contains(["redirect", "rewrite"], var.clean_urls.mode)
+    error_message = "clean_urls.mode must be \"redirect\" or \"rewrite\"."
+  }
+
+  description = <<EOF
+Serve extension-less URLs for a site whose files end in `.html`.
+When enabled, a CloudFront Function maps `/docs/page` to `/docs/page.html` and `/docs/` to `/docs/index.html`.
+Requests that already name a file (any extension) pass through untouched.
+`mode = "redirect"` answers extension-less paths with an `HTTP 301` to the `.html` URL, keeping `.html` as the canonical form.
+`mode = "rewrite"` serves the `.html` file silently, making the extension-less URL canonical.
+Trailing-slash paths are always rewritten, never redirected, because `/docs/` is already a canonical form.
+EOF
+}
+
 variable "cache_policy" {
   type        = string
   default     = "Managed-CachingOptimized"
