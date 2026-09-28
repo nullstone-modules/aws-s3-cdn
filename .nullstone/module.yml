@@ -12,3 +12,5 @@ type: capability/cdn/aws
 appCategories:
     - static-site
 is_public: true
+include:
+    - functions/*

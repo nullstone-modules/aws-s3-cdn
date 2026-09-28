@@ -1,3 +1,6 @@
+# 0.12.1 (Sep 28, 2026)
+* Fixed packaging: include `functions/*` so the `clean_urls` CloudFront Function template ships with the module.
+
 # 0.12.0 (Sep 28, 2026)
 * Added `clean_urls` to serve extension-less URLs via a CloudFront Function.
   `mode = "redirect"` (default) answers `/page` with a `301` to `/page.html`; `mode = "rewrite"` serves the file silently.
