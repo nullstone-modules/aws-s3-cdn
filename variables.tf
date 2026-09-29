@@ -21,6 +21,16 @@ variable "enable_www" {
   default     = true
 }
 
+variable "redirect_www" {
+  type        = bool
+  default     = false
+  description = <<EOF
+Redirect `www.<domain>` to `<domain>` instead of serving the same content on both hosts.
+When enabled, a CloudFront Function answers requests to `www.<domain>` with an `HTTP 301` to `https://<domain>`, preserving path and query string.
+This has no effect unless `enable_www` is true.
+EOF
+}
+
 variable "default_document" {
   type        = string
   description = "The default document to use when hitting the root of the site."
