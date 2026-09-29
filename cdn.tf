@@ -36,17 +36,31 @@ data "aws_cloudfront_response_headers_policy" "this" {
   name = var.response_headers_policy
 }
 
-// Maps extension-less URIs to their `.html` file on every viewer request.
-// Only created when `clean_urls.enabled` is true; `function_association` below is empty otherwise.
+locals {
+  // www only reaches this distribution when `enable_www` creates its alias and DNS record
+  redirect_www          = var.enable_www && var.redirect_www
+  enable_viewer_request = var.clean_urls.enabled || local.redirect_www
+  viewer_request_features = compact([
+    local.redirect_www ? "redirect www to apex" : "",
+    var.clean_urls.enabled ? "map extension-less URIs to .html (${var.clean_urls.mode})" : "",
+  ])
+}
+
+// Runs on every viewer request to redirect www to the apex domain and/or map extension-less URIs to their `.html` file.
+// Only created when `redirect_www` or `clean_urls.enabled` is true; `function_association` below is empty otherwise.
+// The resource address and function name predate `redirect_www`; they are retained so existing functions update in place.
 resource "aws_cloudfront_function" "clean_urls" {
-  count = var.clean_urls.enabled ? 1 : 0
+  count = local.enable_viewer_request ? 1 : 0
 
   name    = "${local.resource_name}-clean-urls"
   runtime = "cloudfront-js-2.0"
-  comment = "Map extension-less URIs to .html (${var.clean_urls.mode})"
+  comment = "Viewer request: ${join(", ", local.viewer_request_features)}"
   publish = true
-  code = templatefile("${path.module}/functions/clean_urls.js.tftpl", {
-    redirect = var.clean_urls.mode == "redirect"
+  code = templatefile("${path.module}/functions/viewer_request.js.tftpl", {
+    redirect_www = local.redirect_www
+    apex_domain  = local.subdomain
+    clean_urls   = var.clean_urls.enabled
+    redirect     = var.clean_urls.mode == "redirect"
   })
 }
 

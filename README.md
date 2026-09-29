@@ -8,6 +8,8 @@ Creates an AWS CloudFront Distribution (CDN) with an SSL Certificate against a s
 
 - `enable_www: bool` - (Default: true) Enable/Disable creating www.<domain> DNS record 
 in addition to <subdomain> DNS record for site hosted on CDN
+- `redirect_www: bool` - (Default: false) Redirect `www.<domain>` to `<domain>` with an `HTTP 301`, preserving path and query string.
+  Requires `enable_www = true`. When false, `www.<domain>` serves the same content as `<domain>`.
 - `enable_404page: bool` - (Default: false) Enable/Disable custom 404 page within s3 bucket. If enabled, bucket must contain 404.html.
 - `clean_urls: object` - (Default: `{ enabled = false, mode = "redirect" }`) Serve extension-less URLs for sites whose files end in `.html`.
   A CloudFront Function maps `/page` to `/page.html` and `/dir/` to `/dir/index.html`; requests that already name a file pass through.
