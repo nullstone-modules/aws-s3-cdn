@@ -1,4 +1,4 @@
-# 0.13.0 (Sep 29, 2026)
+# 0.12.2 (Sep 29, 2026)
 * Added `redirect_www` to answer requests for `www.<domain>` with a `301` to `https://<domain>`, preserving path and query string.
   Off by default; existing distributions are unchanged.
 
