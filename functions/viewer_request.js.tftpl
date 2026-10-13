@@ -8,7 +8,12 @@
 
 function handler(event) {
   var request = event.request;
-  var uri = request.uri;
+  // Collapse runs of slashes before the URI is ever echoed into a `Location` header.
+  // A request for `//evil.example/x` must not become `Location: //evil.example/x.html`,
+  // which browsers read as a protocol-relative URL to another host (open redirect).
+  // CloudFront already folds `\` into `/`, so this covers `/\evil.example` too.
+  var uri = request.uri.replace(/\/{2,}/g, '/');
+  request.uri = uri;
 
 %{ if redirect_www ~}
   // Redirect before any rewriting so the original path and query string are preserved.

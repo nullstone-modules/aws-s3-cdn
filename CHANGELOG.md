@@ -1,3 +1,8 @@
+# 0.12.3 (Oct 13, 2026)
+* Fixed an open redirect in the viewer-request CloudFront Function: a request for `//evil.example/page` was answered with
+  `Location: //evil.example/page.html`, which browsers treat as a protocol-relative URL to another host (CWE-601).
+  Runs of slashes in the request URI are now collapsed before any redirect or rewrite, so `//evil.example/page` goes to `/evil.example/page.html`.
+
 # 0.12.2 (Sep 29, 2026)
 * Added `redirect_www` to answer requests for `www.<domain>` with a `301` to `https://<domain>`, preserving path and query string.
   Off by default; existing distributions are unchanged.
